@@ -1,165 +1,171 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@color/LightGrey"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/LightGrey"
-    tools:context=".Register">
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/Green"
-        app:titleTextColor="@color/White"
-        app:title="Üye Ol"
-        app:popupTheme="@style/AppTheme.PopupOverlay" />
-
+    tools:context=".Register"
+    android:focusableInTouchMode="true"
+    android:layout_height="fill_parent">
     <RelativeLayout
-        android:id="@+id/img_layout"
-        android:layout_marginTop="40dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/toolbar">
+        android:background="@color/LightGrey">
 
-        <ImageView
-            android:src="@drawable/account"
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="200dp" />
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/Green"
+            app:titleTextColor="@color/White"
+            app:title="Üye Ol"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+        <RelativeLayout
+            android:id="@+id/img_layout"
+            android:layout_marginTop="40dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/toolbar">
+
+            <ImageView
+                android:src="@drawable/account"
+                android:layout_width="match_parent"
+                android:layout_height="200dp" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_below="@id/img_layout"
+            android:layout_marginTop="50dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            style="@style/padding_new_product"
+            android:id="@+id/name_layout">
+
+            <TextView
+                style="@style/new_product_txt_element"
+                android:text="@string/name"
+                android:inputType="none">
+            </TextView>
+
+            <EditText
+                android:id="@+id/name"
+                style="@style/editText"
+                android:background="@color/White"
+                android:hint="@string/name"
+                android:inputType="none">
+            </EditText>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_below="@id/name_layout"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            style="@style/padding_new_product"
+            android:id="@+id/surname_layout">
+
+            <TextView
+                style="@style/new_product_txt_element"
+                android:text="@string/surname"
+                android:inputType="none">
+            </TextView>
+
+            <EditText
+                android:id="@+id/surname"
+                style="@style/editText"
+                android:background="@color/White"
+                android:hint="@string/surname"
+                android:inputType="none">
+            </EditText>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_below="@id/surname_layout"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            style="@style/padding_new_product"
+            android:id="@+id/username_layout">
+
+            <TextView
+                style="@style/new_product_txt_element"
+                android:text="@string/e_mail"
+                android:inputType="none">
+            </TextView>
+
+            <EditText
+                android:id="@+id/email"
+                style="@style/editText"
+                android:background="@color/White"
+                android:hint="@string/e_mail"
+                android:inputType="textEmailAddress">
+            </EditText>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_below="@id/username_layout"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            style="@style/padding_new_product"
+            android:id="@+id/password_layout">
+
+            <TextView
+                style="@style/new_product_txt_element"
+                android:text="@string/pw"
+                android:inputType="none">
+            </TextView>
+
+            <EditText
+                android:id="@+id/password"
+                style="@style/editText"
+                android:background="@color/White"
+                android:hint="@string/pw_hint"
+                android:inputType="textPassword">
+            </EditText>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_below="@id/password_layout"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            style="@style/padding_new_product"
+            android:id="@+id/password1_layout">
+
+            <TextView
+                style="@style/new_product_txt_element"
+                android:text="@string/pw_again"
+                android:inputType="none">
+            </TextView>
+
+            <EditText
+                android:id="@+id/password1"
+                style="@style/editText"
+                android:background="@color/White"
+                android:hint="@string/pw_again_hint"
+                android:inputType="textPassword">
+            </EditText>
+        </LinearLayout>
+
+        <Button
+            android:layout_below="@id/password_layout"
+            android:id="@+id/register_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/fab_margin"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="100dp"
+            android:background="@drawable/layout_rounded_corners"
+            android:backgroundTint="@color/buttonRed"
+            android:text="@string/register_button_text"
+            android:textColor="@color/White"
+            android:textStyle="bold"
+            android:layout_marginStart="20dp"
+            android:onClick="register"/>
+
     </RelativeLayout>
-
-    <LinearLayout
-        android:layout_below="@id/img_layout"
-        android:layout_marginTop="50dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        style="@style/padding_new_product"
-        android:id="@+id/name_layout">
-
-        <TextView
-            style="@style/new_product_txt_element"
-            android:text="@string/name"
-            android:inputType="none">
-        </TextView>
-
-        <EditText
-            android:id="@+id/name"
-            style="@style/editText"
-            android:background="@color/White"
-            android:hint="@string/name"
-            android:inputType="none">
-        </EditText>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_below="@id/name_layout"
-        android:layout_marginTop="4dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        style="@style/padding_new_product"
-        android:id="@+id/surname_layout">
-
-        <TextView
-            style="@style/new_product_txt_element"
-            android:text="@string/surname"
-            android:inputType="none">
-        </TextView>
-
-        <EditText
-            android:id="@+id/surname"
-            style="@style/editText"
-            android:background="@color/White"
-            android:hint="@string/surname"
-            android:inputType="none">
-        </EditText>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_below="@id/surname_layout"
-        android:layout_marginTop="4dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        style="@style/padding_new_product"
-        android:id="@+id/username_layout">
-
-        <TextView
-            style="@style/new_product_txt_element"
-            android:text="@string/e_mail"
-            android:inputType="none">
-        </TextView>
-
-        <EditText
-            android:id="@+id/email"
-            style="@style/editText"
-            android:background="@color/White"
-            android:hint="@string/e_mail"
-            android:inputType="textEmailAddress">
-        </EditText>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_below="@id/username_layout"
-        android:layout_marginTop="4dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        style="@style/padding_new_product"
-        android:id="@+id/password_layout">
-
-        <TextView
-            style="@style/new_product_txt_element"
-            android:text="@string/pw"
-            android:inputType="none">
-        </TextView>
-
-        <EditText
-            android:id="@+id/password"
-            style="@style/editText"
-            android:background="@color/White"
-            android:hint="@string/pw_hint"
-            android:inputType="textPassword">
-        </EditText>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_below="@id/password_layout"
-        android:layout_marginTop="4dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        style="@style/padding_new_product"
-        android:id="@+id/password1_layout">
-
-        <TextView
-            style="@style/new_product_txt_element"
-            android:text="@string/pw_again"
-            android:inputType="none">
-        </TextView>
-
-        <EditText
-            android:id="@+id/password1"
-            style="@style/editText"
-            android:background="@color/White"
-            android:hint="@string/pw_again_hint"
-            android:inputType="textPassword">
-        </EditText>
-    </LinearLayout>
-
-    <Button
-        android:layout_below="@id/password_layout"
-        android:id="@+id/register_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/fab_margin"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="100dp"
-        android:background="@drawable/layout_rounded_corners"
-        android:backgroundTint="@color/buttonRed"
-        android:text="@string/register_button_text"
-        android:textColor="@color/White"
-        android:textStyle="bold"
-        android:layout_marginStart="20dp"
-        android:onClick="register"/>
-
-</RelativeLayout>
+</ScrollView>

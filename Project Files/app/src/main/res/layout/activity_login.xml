@@ -1,111 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@color/LightGrey"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/LightGrey"
-    tools:context=".Login">
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+    tools:context=".Login"
+    android:layout_height="fill_parent">
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/Green"
-        app:titleTextColor="@color/White"
-        app:title="Giriş Yap"
-        app:popupTheme="@style/AppTheme.PopupOverlay" />
+        android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:layout_below="@id/toolbar"
-        android:layout_marginTop="210dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        style="@style/padding_new_product"
-        android:id="@+id/username_layout">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/Green"
+            app:titleTextColor="@color/White"
+            app:title="Giriş Yap"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-        <TextView
-            style="@style/new_product_txt_element"
-            android:text="@string/e_mail"
-            android:inputType="none">
-        </TextView>
+        <LinearLayout
+            android:layout_below="@id/toolbar"
+            android:layout_marginTop="210dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            style="@style/padding_new_product"
+            android:id="@+id/username_layout">
 
-        <EditText
-            android:id="@+id/username"
-            style="@style/editText"
-            android:background="@color/White"
-            android:paddingStart="4dp"
-            android:hint="@string/e_mail"
-            android:inputType="none">
-        </EditText>
-    </LinearLayout>
+            <TextView
+                style="@style/new_product_txt_element"
+                android:text="@string/e_mail"
+                android:inputType="none">
+            </TextView>
 
-    <LinearLayout
-        android:layout_below="@id/username_layout"
-        android:layout_marginTop="4dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        style="@style/padding_new_product"
-        android:id="@+id/password_layout">
+            <EditText
+                android:id="@+id/email"
+                style="@style/editText"
+                android:background="@color/White"
+                android:paddingStart="4dp"
+                android:hint="@string/e_mail"
+                android:inputType="textEmailAddress">
+            </EditText>
+        </LinearLayout>
 
-        <TextView
-            style="@style/new_product_txt_element"
-            android:text="@string/pw"
-            android:inputType="none">
-        </TextView>
+        <LinearLayout
+            android:layout_below="@id/username_layout"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            style="@style/padding_new_product"
+            android:id="@+id/password_layout">
 
-        <EditText
-            android:id="@+id/password"
-            style="@style/editText"
-            android:background="@color/White"
-            android:paddingStart="4dp"
-            android:hint="@string/pw"
-            android:inputType="textPassword">
-        </EditText>
-    </LinearLayout>
+            <TextView
+                style="@style/new_product_txt_element"
+                android:text="@string/pw"
+                android:inputType="none">
+            </TextView>
 
-    <LinearLayout
-        android:id="@+id/button_layout0"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginEnd="40dp"
-        android:layout_below="@+id/password_layout"
-        android:layout_marginTop="20dp"
-        android:orientation="horizontal"
-        android:weightSum="2">
+            <EditText
+                android:id="@+id/password"
+                style="@style/editText"
+                android:background="@color/White"
+                android:paddingStart="4dp"
+                android:hint="@string/pw"
+                android:inputType="textPassword">
+            </EditText>
+        </LinearLayout>
 
-        <!-- Register Button -->
+        <LinearLayout
+            android:id="@+id/button_layout0"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:layout_below="@+id/password_layout"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal"
+            android:weightSum="2">
 
-        <Button
-            android:id="@+id/register_button"
-            android:layout_width="30dp"
-            android:layout_height="40dp"
-            android:layout_marginEnd="10dp"
-            android:layout_weight="1"
-            android:layout_marginStart="10dp"
-            android:background="@drawable/layout_rounded_corners"
-            android:backgroundTint="@color/buttonRed"
-            android:text="@string/register_button_text"
-            android:textColor="@color/White"
-            android:textStyle="bold"
-            android:onClick="register"/>
+            <!-- Register Button -->
 
-        <!-- Login Button -->
+            <Button
+                android:id="@+id/register_button"
+                android:layout_width="30dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/layout_rounded_corners"
+                android:backgroundTint="@color/buttonRed"
+                android:text="@string/register_button_text"
+                android:textColor="@color/White"
+                android:textStyle="bold"
+                android:onClick="register"/>
 
-        <Button
-            android:id="@+id/login_button"
-            android:layout_width="30dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_weight="1"
-            android:background="@drawable/layout_rounded_corners"
-            android:backgroundTint="@color/buttonRed"
-            android:text="@string/login_button_text"
-            android:textColor="@color/White"
-            android:textStyle="bold"
-            android:onClick="login"/>
-    </LinearLayout>
+            <!-- Login Button -->
 
-</RelativeLayout>
+            <Button
+                android:id="@+id/login_button"
+                android:layout_width="30dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/layout_rounded_corners"
+                android:backgroundTint="@color/buttonRed"
+                android:text="@string/login_button_text"
+                android:textColor="@color/White"
+                android:textStyle="bold"
+                android:onClick="login"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</ScrollView>

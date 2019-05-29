@@ -1,0 +1,302 @@
+{
+	"info": {
+		"_postman_id": "160a0551-d51c-4646-bf56-d950ef0df15e",
+		"name": "Tayfun - All",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Person",
+			"item": [
+				{
+					"name": "auth",
+					"item": [
+						{
+							"name": "authentivate person",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"email\": \"y@t.com\", \n\t\"password\":\"1234ty\"\n}"
+								},
+								"url": {
+									"raw": "https://9gjgvaty2l.execute-api.eu-central-1.amazonaws.com/dev/person/auth",
+									"protocol": "https",
+									"host": [
+										"9gjgvaty2l",
+										"execute-api",
+										"eu-central-1",
+										"amazonaws",
+										"com"
+									],
+									"path": [
+										"dev",
+										"person",
+										"auth"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "get person by email",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "dvsvds",
+								"value": "ferwgew",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://9gjgvaty2l.execute-api.eu-central-1.amazonaws.com/dev/person?email=yurdaer@zoho.com",
+							"protocol": "https",
+							"host": [
+								"9gjgvaty2l",
+								"execute-api",
+								"eu-central-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"dev",
+								"person"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "yurdaer@zoho.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "register new person",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"yurdaer@zoho.com\", \n\t\"name\":\"tayfun\",\n\t\"password\": \"123\"\n}"
+						},
+						"url": {
+							"raw": "https://9gjgvaty2l.execute-api.eu-central-1.amazonaws.com/dev/person",
+							"protocol": "https",
+							"host": [
+								"9gjgvaty2l",
+								"execute-api",
+								"eu-central-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"dev",
+								"person"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete person by email",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\":\"yurdaer@zoho.com\"\n}"
+						},
+						"url": {
+							"raw": "https://9gjgvaty2l.execute-api.eu-central-1.amazonaws.com/dev/person",
+							"protocol": "https",
+							"host": [
+								"9gjgvaty2l",
+								"execute-api",
+								"eu-central-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"dev",
+								"person"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "delete product",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"card_no\": \"1\"\n}"
+						},
+						"url": {
+							"raw": "https://9gjgvaty2l.execute-api.eu-central-1.amazonaws.com/dev/product",
+							"protocol": "https",
+							"host": [
+								"9gjgvaty2l",
+								"execute-api",
+								"eu-central-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"dev",
+								"product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add new product",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"card_no\": \"2\",\n    \"product_name\": \"holy shit\",\n    \"model_no\": \"model_no\",\n    \"quantity\": \"2\",\n    \"price_buy\": \"5\",\n    \"price_sell\": \"7\",\n    \"description\": \"desc\",\n    \"log\": {\n      \"hey\": \"maaan\"\n    }\n}"
+						},
+						"url": {
+							"raw": "https://9gjgvaty2l.execute-api.eu-central-1.amazonaws.com/dev/product",
+							"protocol": "https",
+							"host": [
+								"9gjgvaty2l",
+								"execute-api",
+								"eu-central-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"dev",
+								"product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update product",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"card_no\": \"1\",\n    \"product_name\": \"holy mo\",\n    \"model_no\": \"m123452342\",\n    \"quantity\": \"2\",\n    \"price_buy\": \"5\",\n    \"description\": \"desc\",\n    \"log\": {\n      \"hey\": \"maaan\"\n    }\n}"
+						},
+						"url": {
+							"raw": "https://9gjgvaty2l.execute-api.eu-central-1.amazonaws.com/dev/product",
+							"protocol": "https",
+							"host": [
+								"9gjgvaty2l",
+								"execute-api",
+								"eu-central-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"dev",
+								"product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all products by email",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://9gjgvaty2l.execute-api.eu-central-1.amazonaws.com/dev/product?email=erhan@erhan.com",
+							"protocol": "https",
+							"host": [
+								"9gjgvaty2l",
+								"execute-api",
+								"eu-central-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"dev",
+								"product"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "erhan@erhan.com"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

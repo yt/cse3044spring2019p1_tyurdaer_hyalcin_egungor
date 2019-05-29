@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.SearchView;
 
 public class ListProducts extends AppCompatActivity {
+    private String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +27,12 @@ public class ListProducts extends AppCompatActivity {
                 return false;
             }
         });
+
+        this.email = getIntent().getStringExtra("email");
+        String type = "list_products";
+        ApiHandler apiHandler = new ApiHandler(this);
+        apiHandler.execute(type, email);
+
     }
 
     public void add_new_product(View v) {

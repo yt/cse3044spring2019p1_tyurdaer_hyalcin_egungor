@@ -8,15 +8,31 @@ import android.widget.EditText;
 
 public class Login extends AppCompatActivity {
 
+    EditText email_txt, pw_txt;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        email_txt = findViewById(R.id.email);
+        pw_txt = findViewById(R.id.password);
+
+        // TODO Delete this lines
+        email_txt.setText("erhan@erhan.com");
+        pw_txt.setText("321");
     }
 
     public void login(View v) {
-        Intent intent = new Intent(Login.this,ListProducts.class);
-        startActivity(intent);
+        String type, email, pw;
+        type = "login";
+        email = email_txt.getText().toString();
+        pw = pw_txt.getText().toString();
+
+        if(!email.equals("") && !pw.equals("")){
+            ApiHandler apiHandler = new ApiHandler(this);
+            apiHandler.execute(type,email,pw);
+        }
     }
 
     public void register(View v) {

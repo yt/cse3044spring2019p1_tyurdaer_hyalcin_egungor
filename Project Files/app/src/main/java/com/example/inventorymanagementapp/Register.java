@@ -22,6 +22,19 @@ public class Register extends AppCompatActivity {
     }
 
     public void register(View view) {
+        String type, email, pw, pw1, name, surname;
+        type = "register";
+        email = email_txt.getText().toString();
+        pw = pw_txt.getText().toString();
+        pw1 = pw1_txt.getText().toString();
+        name = name_txt.getText().toString();
+        surname = surname_txt.getText().toString();
 
+        if(!email.equals("") && !pw.equals("") && !pw1.equals("") && !name.equals("") && !surname.equals("")){
+            if(pw.equals(pw1)){
+                ApiHandler apiHandler = new ApiHandler(this);
+                apiHandler.execute(type,email,pw,name,surname);
+            }
+        }
     }
 }
