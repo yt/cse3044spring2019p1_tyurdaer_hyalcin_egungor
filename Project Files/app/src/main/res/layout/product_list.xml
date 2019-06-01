@@ -18,7 +18,7 @@
         android:iconifiedByDefault="false"
         android:queryHint="Ürün Adı/Kodu/Açıklama Ara"/>
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    <ScrollView
         android:id="@+id/all_products"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

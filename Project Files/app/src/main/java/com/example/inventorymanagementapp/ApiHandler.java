@@ -5,6 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -89,9 +93,6 @@ public class ApiHandler extends AsyncTask<String,String,JSONObject> {
         return null;
     }
 
-    /**
-     * Method to make json array request where response starts with [
-     * */
     private void makeJsonArrayRequest(String url) {
 
         JsonArrayRequest req = new JsonArrayRequest(url,
@@ -100,28 +101,61 @@ public class ApiHandler extends AsyncTask<String,String,JSONObject> {
                     public void onResponse(JSONArray response) {
                         Log.d("jsonarrayreq", response.toString());
 
+                        LinearLayout tl = ((Activity)context).findViewById(R.id.all_products_table_layout);
+                        tl.removeAllViews();
+                        View tablerow = null;
+                        TextView product_name_txt, card_no_txt, place_txt, quantity_txt;
+
                         try {
                             // Parsing json array response
                             // loop through each json object
 
                             for (int i = 0; i < response.length(); i++) {
 
+                                // Get json object from response
                                 JSONObject product = (JSONObject) response.get(i);
 
+                                // Parse json object
                                 String name = product.getString("modelName");
                                 String quantity = product.getString("quantity");
-                                String cardNo = product.getString("cardNo");
-                                String priceBuy = product.getString("priceBuy");
+                                final String cardNo = product.getString("cardNo");
+                                //String place = product.getString("place");
+
+                                /*String priceBuy = product.getString("priceBuy");
                                 String priceSell = product.getString("priceSell");
                                 String modelno = product.getString("modelNo");
-                                String description = product.getString("description");
+                                String description = product.getString("description");*/
 
-                                JSONObject product_log = product.getJSONObject("log");
-                                // TODO add to product list -> create new table row !!!!! like previous project
+                                //JSONObject product_log = product.getJSONObject("log");
 
+                                // Create table row for each product, add it to the list
+                                tablerow = View.inflate(context, R.layout.product_list_row, null);
+                                product_name_txt = tablerow.findViewById(R.id.product_name);
+                                card_no_txt= tablerow.findViewById(R.id.card_no);
+                                place_txt = tablerow.findViewById(R.id.place);
+                                quantity_txt = tablerow.findViewById(R.id.quantity);
+
+                                // initialize text views
+                                product_name_txt.setText(name);
+                                card_no_txt.setText(cardNo);
+                                place_txt.setText("place");     //TODO change "place" with response API
+                                quantity_txt.setText(quantity);
+
+                                // table row listener
+                                tablerow.setTag(i);
+                                tablerow.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Intent intent = new Intent(context,ProductView.class);
+                                        intent.putExtra("clicked_item",cardNo);
+                                        context.startActivity(intent);
+                                        ((Activity)context).finish();
+                                    }
+                                });
+
+                                //add TableRows to Layout
+                                tl.addView(tablerow);
                             }
-
-                            //txtResponse.setText(jsonResponse);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
