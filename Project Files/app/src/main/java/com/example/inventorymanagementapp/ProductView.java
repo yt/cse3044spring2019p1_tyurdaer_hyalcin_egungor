@@ -87,7 +87,18 @@ public class ProductView extends AppCompatActivity {
     }
 
     public void update_product(View v) {
-
+        Intent intent = new Intent(this,ProductUpdate.class);
+        intent.putExtra("email",this.email);
+        intent.putExtra("p_name",product_name_txt.getText().toString());
+        intent.putExtra("card_no",card_no_txt.getText().toString());
+        intent.putExtra("model_no",model_no_txt.getText().toString());
+        intent.putExtra("price_buy",Double.parseDouble(price_buy_txt.getText().toString()));
+        intent.putExtra("price_sell",Double.parseDouble(price_sell_txt.getText().toString()));
+        intent.putExtra("place",place_txt.getText().toString());
+        intent.putExtra("description",description_txt.getText().toString());
+        intent.putExtra("quantity",Double.parseDouble(quantity_txt.getText().toString()));
+        startActivity(intent);
+        finish();
     }
 
     public void delete_product(View v) {

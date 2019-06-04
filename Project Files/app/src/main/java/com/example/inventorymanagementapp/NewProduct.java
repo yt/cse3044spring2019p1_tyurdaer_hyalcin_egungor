@@ -51,7 +51,6 @@ public class NewProduct extends AppCompatActivity {
     }
 
     private boolean checkEditTextInputs(String p_name, String c_no, String m_no, String p_b, String p_s, String plc, String qnt){
-
         return !p_name.equals("") && !c_no.equals("") && !m_no.equals("") && !p_b.equals("") && !p_s.equals("") && !plc.equals("") && !qnt.equals("");
     }
 

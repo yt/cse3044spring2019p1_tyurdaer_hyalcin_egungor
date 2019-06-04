@@ -105,6 +105,24 @@ public class ApiHandler extends AsyncTask<String,String,JSONObject> {
                 }
                 break;
             case "update_product":
+                try {
+                    this.email = params[1];
+                    this.card_no = params[3];
+                    String update_url = url + "/product";
+                    JSONObject jsonBody = new JSONObject();
+                    jsonBody.put("username", params[1]);
+                    jsonBody.put("product_name", params[2]);
+                    jsonBody.put("card_no", params[3]);
+                    jsonBody.put("model_no", params[4]);
+                    jsonBody.put("price_buy", params[5]);
+                    jsonBody.put("price_sell", params[6]);
+                    jsonBody.put("place", params[7]);
+                    jsonBody.put("description", params[8]);
+                    jsonBody.put("quantity", params[9]);
+                    httpPut(update_url,jsonBody);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 break;
             case "delete_product":
                 this.email = params[1];
@@ -302,6 +320,41 @@ public class ApiHandler extends AsyncTask<String,String,JSONObject> {
         MySingleton.getmInstance(context).addToRequestQue(jsonObjectRequest);
     }
 
+    private void httpPut(String url, JSONObject jsonBody){
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.PUT, url, jsonBody, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            Log.v("Post Success", response.toString());
+                            processResponse(response);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Post Error", error.toString());
+                    }
+                }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Content-Type", "application/json");
+                return params;
+            }
+
+            @Override
+            public String getBodyContentType(){
+                return "application/json";
+            }
+        };
+        MySingleton.getmInstance(context).addToRequestQue(jsonObjectRequest);
+    }
+
     private void processResponse(JSONObject response) throws JSONException {
 
         if (this.type.equals("login")){
@@ -355,6 +408,17 @@ public class ApiHandler extends AsyncTask<String,String,JSONObject> {
                 ((Activity)context).finish();
             }else {
                 Toast.makeText(context, "Product Delete Failed!", Toast.LENGTH_SHORT).show();
+            }
+        }else if(this.type.equals(("update_product"))){
+            if (response.getString("result").equals("true")){
+                Toast.makeText(context, "Product Updated!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context, ProductView.class);
+                intent.putExtra("email", this.email);
+                intent.putExtra("c_no",this.card_no);
+                context.startActivity(intent);
+                ((Activity)context).finish();
+            }else {
+                Toast.makeText(context, "Product Update Failed!", Toast.LENGTH_SHORT).show();
             }
         }
 
