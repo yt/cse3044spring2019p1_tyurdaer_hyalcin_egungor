@@ -29,6 +29,7 @@ public class ApiHandler extends AsyncTask<String,String,JSONObject> {
     Context context;
     String email;
     String type;
+    String card_no;
     final String url = "https://9gjgvaty2l.execute-api.eu-central-1.amazonaws.com/dev";
 
     public ApiHandler(Context ctx){
@@ -74,11 +75,36 @@ public class ApiHandler extends AsyncTask<String,String,JSONObject> {
             case "list_products":
                 this.email = params[1];
                 String list_url = url + "/product?email=" + email;
-                makeJsonArrayRequest(list_url);
+                list_products(list_url);
                 break;
             case "view_product":
+                this.email = params[1];
+                this.card_no = params[2];
+                String view_url = url + "/product?cardno=" + this.card_no;
+                //view_product(view_url);
+                Log.v("Get Success : url", view_url);
+                httpGet(view_url);
                 break;
             case "new_product":
+                try {
+                    this.email = params[1];
+                    this.card_no = params[3];
+                    String new_product_url = url + "/product";
+                    JSONObject jsonBody = new JSONObject();
+                    jsonBody.put("username", params[1]);
+                    jsonBody.put("product_name", params[2]);
+                    jsonBody.put("card_no", params[3]);
+                    jsonBody.put("model_no", params[4]);
+                    jsonBody.put("price_buy", params[5]);
+                    jsonBody.put("price_sell", params[6]);
+                    jsonBody.put("place", params[7]);
+                    jsonBody.put("description", params[8]);
+                    jsonBody.put("quantity", params[9]);
+                    jsonBody.put("log", new JSONObject());
+                    httpPost(new_product_url,jsonBody);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 break;
             case "update_product":
                 break;
@@ -93,7 +119,7 @@ public class ApiHandler extends AsyncTask<String,String,JSONObject> {
         return null;
     }
 
-    private void makeJsonArrayRequest(String url) {
+    private void list_products(String url) {
 
         JsonArrayRequest req = new JsonArrayRequest(url,
                 new Response.Listener<JSONArray>() {
@@ -103,7 +129,7 @@ public class ApiHandler extends AsyncTask<String,String,JSONObject> {
 
                         LinearLayout tl = ((Activity)context).findViewById(R.id.all_products_table_layout);
                         tl.removeAllViews();
-                        View tablerow = null;
+                        View tablerow;
                         TextView product_name_txt, card_no_txt, place_txt, quantity_txt;
 
                         try {
@@ -119,14 +145,8 @@ public class ApiHandler extends AsyncTask<String,String,JSONObject> {
                                 String name = product.getString("modelName");
                                 String quantity = product.getString("quantity");
                                 final String cardNo = product.getString("cardNo");
+                                final String username = product.getString("username");
                                 //String place = product.getString("place");
-
-                                /*String priceBuy = product.getString("priceBuy");
-                                String priceSell = product.getString("priceSell");
-                                String modelno = product.getString("modelNo");
-                                String description = product.getString("description");*/
-
-                                //JSONObject product_log = product.getJSONObject("log");
 
                                 // Create table row for each product, add it to the list
                                 tablerow = View.inflate(context, R.layout.product_list_row, null);
@@ -138,7 +158,7 @@ public class ApiHandler extends AsyncTask<String,String,JSONObject> {
                                 // initialize text views
                                 product_name_txt.setText(name);
                                 card_no_txt.setText(cardNo);
-                                place_txt.setText("place");     //TODO change "place" with response API
+                                place_txt.setText("place"); //TODO !!!
                                 quantity_txt.setText(quantity);
 
                                 // table row listener
@@ -147,7 +167,8 @@ public class ApiHandler extends AsyncTask<String,String,JSONObject> {
                                     @Override
                                     public void onClick(View v) {
                                         Intent intent = new Intent(context,ProductView.class);
-                                        intent.putExtra("clicked_item",cardNo);
+                                        intent.putExtra("email",username);
+                                        intent.putExtra("c_no",cardNo);
                                         context.startActivity(intent);
                                         ((Activity)context).finish();
                                     }
@@ -172,6 +193,41 @@ public class ApiHandler extends AsyncTask<String,String,JSONObject> {
 
         // Adding request to request queue
         MySingleton.getmInstance(context).addToRequestQue(req);
+    }
+
+    private void httpGet(String url){
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            Log.v("Get Success", response.toString());
+                            processResponse(response);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Get Error", error.toString());
+                    }
+                }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Content-Type", "application/json");
+                return params;
+            }
+
+            @Override
+            public String getBodyContentType(){
+                return "application/json";
+            }
+        };
+        MySingleton.getmInstance(context).addToRequestQue(jsonObjectRequest);
     }
 
     private void httpPost(String url, JSONObject jsonBody){
@@ -233,13 +289,25 @@ public class ApiHandler extends AsyncTask<String,String,JSONObject> {
             else{
                 Toast.makeText(context, "Register Failed!", Toast.LENGTH_SHORT).show();
             }
-        }else if (this.type.equals("list_products")){
-            Log.v("List Products",response.toString());
-            if(response != null){
-                Toast.makeText(context, response.toString(), Toast.LENGTH_LONG).show();
+        }else if (this.type.equals("new_product")){
+            if (response.getString("result").equals("true")){
+                Intent intent = new Intent(context, ProductView.class);
+                intent.putExtra("c_no", this.card_no);
+                intent.putExtra("email", this.email);
+                Toast.makeText(context, "Product added!", Toast.LENGTH_SHORT).show();
+                context.startActivity(intent);
+                ((Activity)context).finish();
             }
-            else{
-                Toast.makeText(context, "List Products Failed!", Toast.LENGTH_SHORT).show();
+            else {
+                Toast.makeText(context, "This product already in list!", Toast.LENGTH_LONG).show();
+            }
+        }else if (this.type.equals("view_product")){
+            try {
+                String fail = response.getString("result");
+                if (fail.equals("true") || fail.equals("false"))
+                    Toast.makeText(context, "View product failed!", Toast.LENGTH_SHORT).show();
+            }catch (JSONException e){
+                ((ProductView)context).fill(response);
             }
         }
 

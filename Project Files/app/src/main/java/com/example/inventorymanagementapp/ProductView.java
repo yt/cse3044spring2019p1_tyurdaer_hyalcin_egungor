@@ -1,20 +1,33 @@
 package com.example.inventorymanagementapp;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class ProductView extends AppCompatActivity {
 
     TextView product_name_txt, card_no_txt, model_no_txt, price_buy_txt, price_sell_txt, place_txt, description_txt, quantity_txt;
+    private String card_no;
+    private String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.product_view);
+
+        this.card_no = getIntent().getStringExtra("c_no");
+        this.email = getIntent().getStringExtra("email");
 
         product_name_txt = findViewById(R.id.product_name);
         card_no_txt = findViewById(R.id.card_no);
@@ -24,6 +37,12 @@ public class ProductView extends AppCompatActivity {
         place_txt = findViewById(R.id.place);
         description_txt = findViewById(R.id.description);
         quantity_txt = findViewById(R.id.quantity);
+
+
+        String type = "view_product";
+        ApiHandler apiHandler = new ApiHandler(this);
+        apiHandler.execute(type, this.email, this.card_no);
+
     }
 
     public void update_product(View v) {
@@ -38,7 +57,36 @@ public class ProductView extends AppCompatActivity {
 
     }
 
-    private void fillLogTable(){
+    public void fill(JSONObject response){
+        JSONArray log;
+
+        try {
+            // initialize text views
+            product_name_txt.setText(response.getString("modelName"));
+            card_no_txt.setText(response.getString("cardNo"));
+            model_no_txt.setText(response.getString("modelNo"));
+            price_buy_txt.setText(response.getString("priceBuy"));
+            price_sell_txt.setText(response.getString("priceSell"));
+            //place_txt.setText(response.getString("place"));
+            place_txt.setText("place");     // TODO change to value from API when API fixed!
+            description_txt.setText(response.getString("description"));
+            quantity_txt.setText(response.getString("quantity"));
+
+            // get log array!
+            log = response.getJSONArray("log");
+
+        } catch (JSONException e) {
+            Log.e("Initialize", "initialize failed!");
+            e.printStackTrace();
+        }
+
+        // Fill log table
+        LinearLayout tl = findViewById(R.id.log_table_layout);
+        View tablerow = null;
+        TextView customer_txt, date_txt, qnt_change_txt, customer_label, date_label, qnt_change_label, label;
+
+        // TODO create table rows and add them to log table here
+
 
     }
 
@@ -47,6 +95,7 @@ public class ProductView extends AppCompatActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             Intent intent = new Intent(ProductView.this,ListProducts.class);
+            intent.putExtra("email",this.email);
             startActivity(intent);
             finish();
             return true;

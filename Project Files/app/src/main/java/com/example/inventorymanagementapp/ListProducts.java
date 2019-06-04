@@ -37,11 +37,9 @@ public class ListProducts extends AppCompatActivity {
 
     public void add_new_product(View v) {
         Intent intent = new Intent(ListProducts.this, NewProduct.class);
+        intent.putExtra("email", this.email);
         startActivity(intent);
         finish();
     }
 
-    private void fillTable(){
-
-    }
 }
