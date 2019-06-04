@@ -1,7 +1,11 @@
 package com.example.inventorymanagementapp;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +24,7 @@ public class ProductView extends AppCompatActivity {
     TextView product_name_txt, card_no_txt, model_no_txt, price_buy_txt, price_sell_txt, place_txt, description_txt, quantity_txt;
     private String card_no;
     private String email;
+    AlertDialog.Builder builder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +48,42 @@ public class ProductView extends AppCompatActivity {
         ApiHandler apiHandler = new ApiHandler(this);
         apiHandler.execute(type, this.email, this.card_no);
 
+
+        // Create alert dialog for delete
+        builder = new AlertDialog.Builder(this,R.style.MyDialogTheme);
+        builder.setTitle("Ürün Silme");
+        builder.setMessage("Ürünü silmek istediğinize emin misiniz?");
+
+        builder.setPositiveButton("EVET", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Delete product from database
+                execueDelete();
+                Toast toast = Toast.makeText(ProductView.this, "Ürün silindi!", Toast.LENGTH_LONG);
+                View view = toast.getView();
+                view.getBackground().setColorFilter(Color.parseColor("#008000"), PorterDuff.Mode.SRC_IN);
+                toast.show();
+                dialog.dismiss();
+            }
+        });
+
+        builder.setNegativeButton("HAYIR", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast toast = Toast.makeText(ProductView.this, "Ürün silinemedi!", Toast.LENGTH_LONG);
+                View view = toast.getView();
+                view.getBackground().setColorFilter(Color.parseColor("#ff2b2b"), PorterDuff.Mode.SRC_IN);
+                toast.show();
+                dialog.dismiss();
+            }
+        });
+
+    }
+
+    public void execueDelete(){
+        String type = "delete_product";
+        ApiHandler apiHandler = new ApiHandler(this);
+        apiHandler.execute(type, this.email, this.card_no);
     }
 
     public void update_product(View v) {
@@ -50,7 +91,8 @@ public class ProductView extends AppCompatActivity {
     }
 
     public void delete_product(View v) {
-
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
     public void add_remove_unit(View v) {

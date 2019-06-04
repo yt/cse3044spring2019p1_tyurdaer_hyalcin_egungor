@@ -81,8 +81,6 @@ public class ApiHandler extends AsyncTask<String,String,JSONObject> {
                 this.email = params[1];
                 this.card_no = params[2];
                 String view_url = url + "/product?cardno=" + this.card_no;
-                //view_product(view_url);
-                Log.v("Get Success : url", view_url);
                 httpGet(view_url);
                 break;
             case "new_product":
@@ -109,6 +107,10 @@ public class ApiHandler extends AsyncTask<String,String,JSONObject> {
             case "update_product":
                 break;
             case "delete_product":
+                this.email = params[1];
+                this.card_no = params[2];
+                String delete_url = url + "/product?cardno=" + this.card_no;
+                httpDelete(delete_url);
                 break;
             case "add_remove_unit":
                 break;
@@ -265,6 +267,41 @@ public class ApiHandler extends AsyncTask<String,String,JSONObject> {
         MySingleton.getmInstance(context).addToRequestQue(jsonObjectRequest);
     }
 
+    private void httpDelete(String url){
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.DELETE, url, null, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            Log.v("Delete Success", response.toString());
+                            processResponse(response);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Delete Error", error.toString());
+                    }
+                }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Content-Type", "application/json");
+                return params;
+            }
+
+            @Override
+            public String getBodyContentType(){
+                return "application/json";
+            }
+        };
+        MySingleton.getmInstance(context).addToRequestQue(jsonObjectRequest);
+    }
+
     private void processResponse(JSONObject response) throws JSONException {
 
         if (this.type.equals("login")){
@@ -308,6 +345,16 @@ public class ApiHandler extends AsyncTask<String,String,JSONObject> {
                     Toast.makeText(context, "View product failed!", Toast.LENGTH_SHORT).show();
             }catch (JSONException e){
                 ((ProductView)context).fill(response);
+            }
+        }else if(this.type.equals(("delete_product"))){
+            if (response.getString("result").equals("true")){
+                Toast.makeText(context, "Product Deleted!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context, ListProducts.class);
+                intent.putExtra("email", this.email);
+                context.startActivity(intent);
+                ((Activity)context).finish();
+            }else {
+                Toast.makeText(context, "Product Delete Failed!", Toast.LENGTH_SHORT).show();
             }
         }
 
