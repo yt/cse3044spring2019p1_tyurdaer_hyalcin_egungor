@@ -14,6 +14,7 @@ public class ProductUpdate extends AppCompatActivity {
     EditText product_name, model_no, price_buy, price_sell, place, description,quantity;
     TextView card_no;
     String email;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,8 +30,8 @@ public class ProductUpdate extends AppCompatActivity {
         quantity = findViewById(R.id.quantity);
 
         Bundle extras = getIntent().getExtras();
-        String p_name,c_no="",m_no,plc,desc;
-        double p_buy,p_sell;
+        String p_name, c_no, m_no, plc, desc;
+        double p_buy, p_sell;
         int qnt;
 
         if(extras != null){

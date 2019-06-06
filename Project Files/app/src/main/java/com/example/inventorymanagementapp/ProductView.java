@@ -87,7 +87,7 @@ public class ProductView extends AppCompatActivity {
     }
 
     public void update_product(View v) {
-        Intent intent = new Intent(this,ProductUpdate.class);
+        Intent intent = new Intent(this, ProductUpdate.class);
         intent.putExtra("email",this.email);
         intent.putExtra("p_name",product_name_txt.getText().toString());
         intent.putExtra("card_no",card_no_txt.getText().toString());
@@ -96,7 +96,7 @@ public class ProductView extends AppCompatActivity {
         intent.putExtra("price_sell",Double.parseDouble(price_sell_txt.getText().toString()));
         intent.putExtra("place",place_txt.getText().toString());
         intent.putExtra("description",description_txt.getText().toString());
-        intent.putExtra("quantity",Double.parseDouble(quantity_txt.getText().toString()));
+        intent.putExtra("quantity",Integer.parseInt(quantity_txt.getText().toString()));
         startActivity(intent);
         finish();
     }
@@ -107,11 +107,22 @@ public class ProductView extends AppCompatActivity {
     }
 
     public void add_remove_unit(View v) {
-
+        Intent intent = new Intent(this, AddRemoveUnit.class);
+        intent.putExtra("email",this.email);
+        intent.putExtra("p_name",product_name_txt.getText().toString());
+        intent.putExtra("card_no",card_no_txt.getText().toString());
+        intent.putExtra("model_no",model_no_txt.getText().toString());
+        intent.putExtra("price_buy",Double.parseDouble(price_buy_txt.getText().toString()));
+        intent.putExtra("price_sell",Double.parseDouble(price_sell_txt.getText().toString()));
+        intent.putExtra("place",place_txt.getText().toString());
+        intent.putExtra("description",description_txt.getText().toString());
+        intent.putExtra("quantity",Integer.parseInt(quantity_txt.getText().toString()));
+        startActivity(intent);
+        finish();
     }
 
     public void fill(JSONObject response){
-        JSONArray log;
+        JSONArray log = null;
 
         try {
             // initialize text views
@@ -120,8 +131,7 @@ public class ProductView extends AppCompatActivity {
             model_no_txt.setText(response.getString("modelNo"));
             price_buy_txt.setText(response.getString("priceBuy"));
             price_sell_txt.setText(response.getString("priceSell"));
-            //place_txt.setText(response.getString("place"));
-            place_txt.setText("place");     // TODO change to value from API when API fixed!
+            place_txt.setText(response.getString("place"));
             description_txt.setText(response.getString("description"));
             quantity_txt.setText(response.getString("quantity"));
 
@@ -138,7 +148,55 @@ public class ProductView extends AppCompatActivity {
         View tablerow = null;
         TextView customer_txt, date_txt, qnt_change_txt, customer_label, date_label, qnt_change_label, label;
 
-        // TODO create table rows and add them to log table here
+        try{
+
+            for (int i = 0; i < log.length(); i++){
+
+                // Get a single json object from log
+                JSONObject log_row = (JSONObject) log.get(i);
+
+                // Parse json object
+                String customer = log_row.getString("customer");
+                String quantity = log_row.getString("quantity");
+                String date = log_row.getString("date");
+                boolean sob = log_row.getBoolean("sob");
+
+                // Create table row for each log row, add it to the log list
+                tablerow = View.inflate(this, R.layout.log_list_row, null);
+                customer_txt = tablerow.findViewById(R.id.customer);
+                date_txt = tablerow.findViewById(R.id.date);
+                qnt_change_txt = tablerow.findViewById(R.id.quantity);
+                customer_label = tablerow.findViewById(R.id.customer_label);
+                date_label = tablerow.findViewById(R.id.date_label);
+                qnt_change_label = tablerow.findViewById(R.id.quantity_label);
+                label = tablerow.findViewById(R.id.label);
+
+                customer_txt.setText(customer);
+                date_txt.setText(date);
+                qnt_change_txt.setText(quantity);
+
+                if (!sob){
+                    customer_label.setBackgroundColor(Color.parseColor("#ff2b2b"));
+                    date_label.setBackgroundColor(Color.parseColor("#ff2b2b"));
+                    qnt_change_label.setBackgroundColor(Color.parseColor("#ff2b2b"));
+                    label.setText("Stok Çıkışı");
+                } else{
+                    customer_label.setBackgroundColor(Color.parseColor("#32CD32"));
+                    date_label.setBackgroundColor(Color.parseColor("#32CD32"));
+                    qnt_change_label.setBackgroundColor(Color.parseColor("#32CD32"));
+                    label.setText("Stok Girişi");
+                }
+
+                tablerow.setTag(i);
+                //add TableRows to Layout
+                tl.addView(tablerow);
+
+            }
+
+        } catch (JSONException e){
+            e.printStackTrace();
+            Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+        }
 
 
     }

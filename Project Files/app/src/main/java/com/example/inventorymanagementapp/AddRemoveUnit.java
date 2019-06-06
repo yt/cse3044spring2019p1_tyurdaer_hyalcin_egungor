@@ -7,16 +7,22 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class AddRemoveUnit extends AppCompatActivity {
+
+    TextView product_name_txt, card_no_txt, model_no_txt, price_buy_txt, price_sell_txt, place_txt, description_txt, quantity_txt;
+    EditText quantity_add_remove, customer_in;
+    String email, c_no;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_unit);
-
-        final TextView product_name_txt, card_no_txt, model_no_txt, price_buy_txt, price_sell_txt, place_txt, description_txt, quantity_txt;
-        final EditText quantity_add_remove, customer_in;
 
         product_name_txt = findViewById(R.id.product_name);
         card_no_txt = findViewById(R.id.card_no);
@@ -31,13 +37,14 @@ public class AddRemoveUnit extends AppCompatActivity {
         customer_in = findViewById(R.id.customer);
 
         Bundle extras = getIntent().getExtras();
-        String p_name,c_no,m_no,plc,desc;
+        String p_name,m_no,plc,desc;
         double p_buy,p_sell;
         int quantity;
 
         if(extras != null){
+            this.email = extras.getString("email");
             p_name = extras.getString("p_name");
-            c_no = extras.getString("card_no");
+            this.c_no = extras.getString("card_no");
             m_no = extras.getString("model_no");
             p_buy = extras.getDouble("price_buy");
             p_sell = extras.getDouble("price_sell");
@@ -58,15 +65,41 @@ public class AddRemoveUnit extends AppCompatActivity {
     }
 
     public void add_unit(View v) {
-
+        if(checkEditTextInputs()) {
+            String type = "add_unit";
+            String customer = customer_in.getText().toString();
+            String quantity = quantity_add_remove.getText().toString();
+            Date cDate = new Date();
+            String currentTime = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
+            ApiHandler apiHandler = new ApiHandler(this);
+            apiHandler.execute(type, this.email, this.c_no, customer, quantity, currentTime);
+        }else{
+            Toast.makeText(this, "Fill the Blanks!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void remove_unit(View v) {
+        if(checkEditTextInputs()) {
+            String type = "remove_unit";
+            String customer = customer_in.getText().toString();
+            String quantity = quantity_add_remove.getText().toString();
+            Date cDate = new Date();
+            String currentTime = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
 
+            if (Integer.parseInt(quantity_txt.getText().toString()) >= Integer.parseInt(quantity_add_remove.getText().toString())){
+                ApiHandler apiHandler = new ApiHandler(this);
+                apiHandler.execute(type, this.email, this.c_no, customer, quantity, currentTime);
+            }else{
+                Toast.makeText(this, "Not enough product!", Toast.LENGTH_SHORT).show();
+            }
+
+        }else{
+            Toast.makeText(this, "Fill the Blanks!", Toast.LENGTH_SHORT).show();
+        }
     }
 
-    private int checkEditTextInputs() {
-        return 1;
+    private boolean checkEditTextInputs() {
+        return !customer_in.getText().toString().equals("") && !quantity_add_remove.getText().toString().equals("");
     }
 
     // show listproducts when back button pressed
@@ -74,8 +107,8 @@ public class AddRemoveUnit extends AppCompatActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             Intent intent = new Intent(AddRemoveUnit.this,ProductView.class);
-            TextView card_no = findViewById(R.id.card_no);
-            intent.putExtra("clicked_item",card_no.getText().toString());
+            intent.putExtra("c_no", this.c_no);
+            intent.putExtra("email", this.email);
             startActivity(intent);
             finish();
             return true;

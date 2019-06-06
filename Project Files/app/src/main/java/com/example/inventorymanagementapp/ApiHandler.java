@@ -7,7 +7,6 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.android.volley.AuthFailureError;
@@ -22,6 +21,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.IOError;
+import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -77,12 +77,14 @@ public class ApiHandler extends AsyncTask<String,String,JSONObject> {
                 String list_url = url + "/product?email=" + email;
                 list_products(list_url);
                 break;
+
             case "view_product":
                 this.email = params[1];
                 this.card_no = params[2];
                 String view_url = url + "/product?cardno=" + this.card_no;
                 httpGet(view_url);
                 break;
+
             case "new_product":
                 try {
                     this.email = params[1];
@@ -98,12 +100,13 @@ public class ApiHandler extends AsyncTask<String,String,JSONObject> {
                     jsonBody.put("place", params[7]);
                     jsonBody.put("description", params[8]);
                     jsonBody.put("quantity", params[9]);
-                    jsonBody.put("log", new JSONObject());
+                    jsonBody.put("log", new JSONArray());
                     httpPost(new_product_url,jsonBody);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 break;
+
             case "update_product":
                 try {
                     this.email = params[1];
@@ -124,16 +127,51 @@ public class ApiHandler extends AsyncTask<String,String,JSONObject> {
                     e.printStackTrace();
                 }
                 break;
+
             case "delete_product":
                 this.email = params[1];
                 this.card_no = params[2];
                 String delete_url = url + "/product?cardno=" + this.card_no;
                 httpDelete(delete_url);
                 break;
-            case "add_remove_unit":
+
+            case "add_unit":
+                try {
+                    this.email = params[1];
+                    this.card_no = params[2];
+                    String add_unit_url = url + "/product/log";
+                    JSONObject jsonBody = new JSONObject();
+                    jsonBody.put("card_no", this.card_no);
+                    jsonBody.put("customer", params[3]);
+                    jsonBody.put("quantity", Integer.parseInt(params[4]));
+                    jsonBody.put("date",params[5]);
+                    jsonBody.put("sob", true);
+                    Log.d("add_unit",jsonBody.toString());
+                    httpPut(add_unit_url, jsonBody);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 break;
+
+            case "remove_unit":
+                try {
+                    this.email = params[1];
+                    this.card_no = params[2];
+                    String remove_unit_url = url + "/product/log";
+                    JSONObject jsonBody = new JSONObject();
+                    jsonBody.put("card_no", this.card_no);
+                    jsonBody.put("customer", params[3]);
+                    jsonBody.put("quantity", Integer.parseInt(params[4]));
+                    jsonBody.put("date",params[5]);
+                    jsonBody.put("sob", false);
+                    httpPut(remove_unit_url,jsonBody);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                break;
+
             default:
-                System.out.println("no match");
+                Log.e("Type Erorr","Type did not match!");
         }
 
         return null;
@@ -166,7 +204,7 @@ public class ApiHandler extends AsyncTask<String,String,JSONObject> {
                                 String quantity = product.getString("quantity");
                                 final String cardNo = product.getString("cardNo");
                                 final String username = product.getString("username");
-                                //String place = product.getString("place");
+                                String place = product.getString("place");
 
                                 // Create table row for each product, add it to the list
                                 tablerow = View.inflate(context, R.layout.product_list_row, null);
@@ -178,7 +216,7 @@ public class ApiHandler extends AsyncTask<String,String,JSONObject> {
                                 // initialize text views
                                 product_name_txt.setText(name);
                                 card_no_txt.setText(cardNo);
-                                place_txt.setText("place"); //TODO !!!
+                                place_txt.setText(place);
                                 quantity_txt.setText(quantity);
 
                                 // table row listener
@@ -327,7 +365,7 @@ public class ApiHandler extends AsyncTask<String,String,JSONObject> {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            Log.v("Post Success", response.toString());
+                            Log.v("Put Success", response.toString());
                             processResponse(response);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -337,7 +375,7 @@ public class ApiHandler extends AsyncTask<String,String,JSONObject> {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.e("Post Error", error.toString());
+                        Log.e("Put Error", error.toString());
                     }
                 }) {
             @Override
@@ -399,7 +437,7 @@ public class ApiHandler extends AsyncTask<String,String,JSONObject> {
             }catch (JSONException e){
                 ((ProductView)context).fill(response);
             }
-        }else if(this.type.equals(("delete_product"))){
+        }else if (this.type.equals(("delete_product"))){
             if (response.getString("result").equals("true")){
                 Toast.makeText(context, "Product Deleted!", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(context, ListProducts.class);
@@ -409,16 +447,25 @@ public class ApiHandler extends AsyncTask<String,String,JSONObject> {
             }else {
                 Toast.makeText(context, "Product Delete Failed!", Toast.LENGTH_SHORT).show();
             }
-        }else if(this.type.equals(("update_product"))){
+        }else if (this.type.equals(("update_product"))){
             if (response.getString("result").equals("true")){
                 Toast.makeText(context, "Product Updated!", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(context, ProductView.class);
                 intent.putExtra("email", this.email);
-                intent.putExtra("c_no",this.card_no);
+                intent.putExtra("c_no", this.card_no);
                 context.startActivity(intent);
                 ((Activity)context).finish();
             }else {
                 Toast.makeText(context, "Product Update Failed!", Toast.LENGTH_SHORT).show();
+            }
+        }else if (this.type.equals("add_unit") || this.type.equals("remove_unit")){
+            if (response.getString("result").equals("true")){
+                Toast.makeText(context, "Completed!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context, ProductView.class);
+                intent.putExtra("email", this.email);
+                intent.putExtra("c_no", this.card_no);
+                context.startActivity(intent);
+                ((Activity)context).finish();
             }
         }
 
