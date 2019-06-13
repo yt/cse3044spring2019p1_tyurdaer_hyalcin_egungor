@@ -42,7 +42,7 @@ public class NewProduct extends AppCompatActivity {
         desc = description.getText().toString();
         qnt = quantity.getText().toString();
 
-        if(checkEditTextInputs(p_name,c_no,m_no,p_b,p_s,plc,qnt)) {
+        if(checkEditTextInputs(p_name,c_no,m_no,p_b,p_s,plc,qnt,desc)) {
             ApiHandler apiHandler = new ApiHandler(this);
             apiHandler.execute(type, this.email, p_name, c_no, m_no, p_b, p_s, plc, desc, qnt);
         }else{
@@ -50,8 +50,8 @@ public class NewProduct extends AppCompatActivity {
         }
     }
 
-    private boolean checkEditTextInputs(String p_name, String c_no, String m_no, String p_b, String p_s, String plc, String qnt){
-        return !p_name.equals("") && !c_no.equals("") && !m_no.equals("") && !p_b.equals("") && !p_s.equals("") && !plc.equals("") && !qnt.equals("");
+    private boolean checkEditTextInputs(String p_name, String c_no, String m_no, String p_b, String p_s, String plc, String qnt, String desc){
+        return !p_name.equals("") && !c_no.equals("") && !m_no.equals("") && !p_b.equals("") && !p_s.equals("") && !plc.equals("") && !qnt.equals("") && !desc.equals("");
     }
 
     // show ListProducts when back button pressed
