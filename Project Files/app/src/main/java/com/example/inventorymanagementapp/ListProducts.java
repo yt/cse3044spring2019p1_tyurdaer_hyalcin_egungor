@@ -19,12 +19,20 @@ public class ListProducts extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                return false;
+                String type = "search";
+                ApiHandler apiHandler = new ApiHandler(ListProducts.this);
+                apiHandler.execute(type, email, query);
+                return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                return false;
+
+                if (newText.equals("")){
+                    this.onQueryTextSubmit("");
+                }
+
+                return true;
             }
         });
 

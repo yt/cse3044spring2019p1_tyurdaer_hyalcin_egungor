@@ -169,6 +169,18 @@ public class ApiHandler extends AsyncTask<String,String,JSONObject> {
                 }
                 break;
 
+            case "search":
+                this.email = params[1];
+                String query = params[2];
+                String search_url;
+                if (query.equals("")){
+                    search_url = url + "/product?email=" + this.email;
+                }else{
+                    search_url = url + "/product/search?email=" + this.email + "&" + "query=" + query;
+                }
+                list_products(search_url);
+                break;
+
             default:
                 Log.e("Type Erorr","Type did not match!");
         }
@@ -438,7 +450,6 @@ public class ApiHandler extends AsyncTask<String,String,JSONObject> {
             }
         }else if (this.type.equals(("delete_product"))){
             if (response.getString("result").equals("true")){
-                Toast.makeText(context, "Product Deleted!", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(context, ListProducts.class);
                 intent.putExtra("email", this.email);
                 context.startActivity(intent);

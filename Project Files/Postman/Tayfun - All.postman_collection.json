@@ -162,6 +162,47 @@
 			"name": "Products",
 			"item": [
 				{
+					"name": "log",
+					"item": [
+						{
+							"name": "update product log",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"card_no\": \"4\",\n    \"customer\": \"tayfun\",\n    \"sob\": true,\n    \"date\": \"2015-03-25\"\n}"
+								},
+								"url": {
+									"raw": "https://9gjgvaty2l.execute-api.eu-central-1.amazonaws.com/dev/product/log",
+									"protocol": "https",
+									"host": [
+										"9gjgvaty2l",
+										"execute-api",
+										"eu-central-1",
+										"amazonaws",
+										"com"
+									],
+									"path": [
+										"dev",
+										"product",
+										"log"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
 					"name": "delete product",
 					"request": {
 						"method": "DELETE",
@@ -264,7 +305,7 @@
 					"response": []
 				},
 				{
-					"name": "get all products by email",
+					"name": "get all products by cardno",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -273,7 +314,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "https://9gjgvaty2l.execute-api.eu-central-1.amazonaws.com/dev/product?email=erhan@erhan.com",
+							"raw": "https://9gjgvaty2l.execute-api.eu-central-1.amazonaws.com/dev/product?cardno=4",
 							"protocol": "https",
 							"host": [
 								"9gjgvaty2l",
@@ -289,7 +330,12 @@
 							"query": [
 								{
 									"key": "email",
-									"value": "erhan@erhan.com"
+									"value": "erhan@erhan.com",
+									"disabled": true
+								},
+								{
+									"key": "cardno",
+									"value": "4"
 								}
 							]
 						}
